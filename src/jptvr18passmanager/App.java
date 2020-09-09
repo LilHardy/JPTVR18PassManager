@@ -5,7 +5,10 @@
  */
 package jptvr18passmanager;
 
+import classes.NewResource;
+import classes.SaverToFile;
 import entity.Resource;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -16,7 +19,13 @@ import java.util.Scanner;
  */
 class App {
     private List<Resource> ListResources = new ArrayList<>();
-    public void run(){
+    private SaverToFile saverToFile = new SaverToFile();
+    public App(){
+        ListResources.addAll(saverToFile.loadListResources());
+    
+    }
+    
+    public void run() throws IOException{
         System.out.println("LOH");
         String repeat = "r";
         do{
@@ -26,27 +35,41 @@ class App {
         System.out.println("2 - список ресурсов ");
         
         Scanner scanner = new Scanner(System.in);
-        int task = scanner.nextInt();
+        
+        do{
+            int task = scanner.nextInt();
+        }while(celi(task)==task);
         scanner.nextLine();
         switch (task) {
             case 0:
                 repeat = "q";
                 break;
             case 1:
-                System.out.println("Выбрана задача 1");
-                Resource resource = new Resource();
-                resource.setName("ivkhk");
-                resource.setUrl("http://kutsehariduskeskus.ee");
-                resource.setLogin("admin");
-                resource.setPassword("123123");
-                ListResources.add(resource);
+                System.out.println("Выбрана задача 1");                
+                NewResource newResource = new NewResource();               
+                ListResources.add(newResource.createResource());
+                
+            
+                saverToFile.saveResource(ListResources);
+            
+            
+                
                 break;
             case 2:
                 System.out.println("Выбрана задача 2");
                 System.out.println("Список ресурсов:");
+                for (Resource ListResource : ListResources) {
+                    System.out.println(ListResource);
+                }
+            case 3:
+                System.out.println("Выбрана задача 3");
+                System.out.println("Список ресурсов: ");
+                int i = 1;
                 for(Resource r : ListResources){
-                    System.out.println(r.toString());}
-                break;
+                    
+                }
+                
+                
         }
             }while(!"q".equals(repeat));
     }
